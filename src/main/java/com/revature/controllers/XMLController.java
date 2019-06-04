@@ -1,23 +1,22 @@
 package com.revature.controllers;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.revature.services.FileService;
+
 import com.revature.models.Project;
 
 @RestController
 @RequestMapping("/xml")
 public class XMLController {
 	
-	@PostMapping("")
+	FileService fileService = new FileService();
+	
+	@PostMapping("") 
 	public Project runXMLParser(@RequestBody Project pom) {
 //		try {
 //			byte[] XMLData = Files.readAllBytes(Paths.get(url));
@@ -31,4 +30,12 @@ public class XMLController {
 		System.out.println(pom);
 		return pom;
 	}
+	
+	
+	@GetMapping("/getfile")
+	public void getFile(@RequestBody String filePath) {
+		fileService.FindFile(filePath);
+		
+	}
+	
 }
