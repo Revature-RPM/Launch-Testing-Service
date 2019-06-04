@@ -11,22 +11,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.revature.models.Pom;
+import com.revature.models.Project;
 
 @RestController
 @RequestMapping("/xml")
 public class XMLController {
 	
 	@PostMapping("")
-	public void runXMLParser(@RequestBody String url) {
-		try {
-			byte[] XMLData = Files.readAllBytes(Paths.get(url));
-			ObjectMapper om = new XmlMapper();
-			Pom pom = om.readValue(XMLData, Pom.class);
-			System.out.println(pom);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public Project runXMLParser(@RequestBody Project pom) {
+//		try {
+//			byte[] XMLData = Files.readAllBytes(Paths.get(url));
+//			ObjectMapper om = new XmlMapper();
+//			Pom pom = om.readValue(XMLData, Pom.class);
+//			System.out.println(pom);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//	}
+		System.out.println(pom);
+		return pom;
 	}
 }
