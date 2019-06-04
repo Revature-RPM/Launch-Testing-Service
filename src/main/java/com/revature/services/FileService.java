@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.revature.models.Pom;
+import com.revature.models.Property;
 
 public class FileService {
 
@@ -19,8 +19,8 @@ public class FileService {
 			try {
 			XmlMapper xmlMapper = new XmlMapper();
 			String xml = inputStreamToString(new FileInputStream(location));
-			Pom pom = xmlMapper.readValue(xml, Pom.class);
-			System.out.println(pom);
+			Property property = xmlMapper.readValue(xml, Property.class);
+			System.out.println(property);
 			}catch(IOException e) {
 				e.printStackTrace();
 			}
