@@ -15,8 +15,9 @@ public class RDSController {
 	
 	@Autowired
 	private RDSService rdsService;
+	private XMLController xmlController;
 	@PostMapping("")
 	public String createDatabase(@RequestBody ProjectDTO projectDTO) {
-		return rdsService.CreateRds(projectDTO);
+		return rdsService.CreateRds(xmlController.getProject());
 	}
 }
