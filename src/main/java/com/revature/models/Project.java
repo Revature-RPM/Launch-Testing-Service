@@ -2,6 +2,9 @@ package com.revature.models;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Project {
 	private List<Property> properties;
 	private String groupId;

@@ -1,40 +1,25 @@
 package com.revature.services;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.revature.models.Property;
+import com.revature.models.Project;
 
 public class FileService {
-
-	public void FindFile(String filePath){
-		 String filepath = "C:\\Users\\User\\Documents\\revature\\Project 3\\pom.xml";
-		File location = new File(filepath);
-		if( location.exists()) {
-			System.out.println("file exists "+location.exists());
-			try {
-			XmlMapper xmlMapper = new XmlMapper();
-			String xml = inputStreamToString(new FileInputStream(location));
-			Property property = xmlMapper.readValue(xml, Property.class);
-			System.out.println(property);
-			}catch(IOException e) {
-				e.printStackTrace();
-			}
+	public Project ConvertFileToPOJO() {
+		try {
+		ObjectMapper objectMapper = new XmlMapper();
+        // Reads from XML and converts to POJO
+		String readContent = new String(Files.readAllBytes(Paths.get("C:\\Users\\User\\Documents\\revature\\Project 3\\pom.xml")));
+		Project project = objectMapper.readValue(readContent, Project.class);
+		System.out.println(project);
+        return project;
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+		return null;
 	}
-	public String inputStreamToString(InputStream is) throws IOException {
-	    StringBuilder sb = new StringBuilder();
-	    String line;
-	    BufferedReader br = new BufferedReader(new InputStreamReader(is));
-	    while ((line = br.readLine()) != null) {
-	        sb.append(line);
-	    }
-	    br.close();
-	    return sb.toString();
-	}
-	
 }

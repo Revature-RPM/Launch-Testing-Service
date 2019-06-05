@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.revature.services.FileService;
 
 import com.revature.models.Project;
+import com.revature.models.Property;
 
 @RestController
 @RequestMapping("/xml")
@@ -32,9 +33,9 @@ public class XMLController {
 	}
 	
 	
-	@GetMapping("/getfile")
-	public void getFile(@RequestBody String filePath) {
-		fileService.FindFile(filePath);
+	@PostMapping("/getfile")
+	public Project getFile(@RequestBody String filePath) {
+		return fileService.ConvertFileToPOJO();
 		
 	}
 	
