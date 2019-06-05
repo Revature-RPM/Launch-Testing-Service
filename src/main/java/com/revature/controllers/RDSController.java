@@ -16,7 +16,6 @@ public class RDSController {
 	private RDSService rdsService;
 	@PostMapping("")
 	public String createDatabase(@RequestBody String dialect) {
-		
-		return null;
+		return rdsService.CreateRds();
 	}
 }
