@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.DTOs.ProjectDTO;
 import com.revature.services.RDSService;
 
 @RestController
@@ -15,7 +16,7 @@ public class RDSController {
 	@Autowired
 	private RDSService rdsService;
 	@PostMapping("")
-	public String createDatabase(@RequestBody String dialect) {
-		return rdsService.CreateRds();
+	public String createDatabase(@RequestBody ProjectDTO projectDTO) {
+		return rdsService.CreateRds(projectDTO);
 	}
 }
