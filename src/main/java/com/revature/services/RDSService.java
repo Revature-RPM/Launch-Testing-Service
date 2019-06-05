@@ -28,9 +28,5 @@ public class RDSService {
 		return response;
 	}
 	
-	public String CreateInstanceIdentifier() {
-		
-		
-		return null;
-	}
+
 }

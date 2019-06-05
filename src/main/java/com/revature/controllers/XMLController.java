@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.revature.services.FileService;
 import com.revature.DTOs.ProjectDTO;
 import com.revature.models.Project;
-import com.revature.models.Property;
 
 @RestController
 @RequestMapping("/xml")
