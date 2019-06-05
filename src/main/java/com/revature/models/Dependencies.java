@@ -2,6 +2,8 @@ package com.revature.models;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Dependencies {
 	private List<Dependency> dependencies;
 
