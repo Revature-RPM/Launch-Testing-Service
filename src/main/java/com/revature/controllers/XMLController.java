@@ -31,7 +31,11 @@ public class XMLController {
 		return pom;
 	}
 	
-	
+	/**
+	 * Post mapping to convert a POM to a more useful object
+	 * @param filePath full path to the POM file that needs to be parsed to determine its reqs
+	 * @return
+	 */
 	@PostMapping("/getfile")
 	public Project getFile(@RequestBody String filePath) {
 		return fileService.ConvertFileToPOJO();

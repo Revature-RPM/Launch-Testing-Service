@@ -17,7 +17,15 @@ public class RDSController {
 	private RDSService rdsService;
 	XMLController xmlController = new XMLController();
 	@PostMapping("")
-	public String createDatabase(@RequestBody ProjectDTO projectDTO) {
-		return rdsService.CreateRds(this.xmlController.getProject());
+
+	/**
+	 * post request for setting up an RDS DB of any type
+	 * 
+	 * @param DTO containing project language/rds engine/instanceID
+	 * @return
+	 */
+public String createDatabase(@RequestBody ProjectDTO projectDTO) {
+	return rdsService.CreateRds(this.xmlController.getProject());
+
 	}
 }
