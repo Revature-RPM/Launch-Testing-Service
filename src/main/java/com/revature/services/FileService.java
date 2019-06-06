@@ -31,7 +31,8 @@ public class FileService {
     		
     		switch (project.getDependencies().get(i).getArtifactId()) {
     		case "postgresql":
-    			projectDTO.setdBLanguage(project.getDependencies().get(i).getArtifactId());
+    			projectDTO.setInstanceId(project.getDependencies().get(0).getArtifactId());
+    			projectDTO.setdBLanguage("postgres");
     			projectDTO.setLanguage("Java Maven");
     			projectDTO.setVersion(project.getProperties().get(1).getProperty());
     			return projectDTO;
