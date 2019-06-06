@@ -13,8 +13,8 @@ public class RDSService {
 	public String CreateRds(ProjectDTO projectDTO) {
 		//RdsClient rds = new Client();
 		String instanceClass = "db.t2.micro";
-		String instanceIdentifier = projectDTO.getInstanceId()+projectDTO.getdBLanguage();
-		String engine = projectDTO.getLanguage();
+		String instanceIdentifier = projectDTO.getInstanceId()+""+projectDTO.getdBLanguage();
+		String engine = projectDTO.getdBLanguage();
 		RdsClient rds = RdsClient.create();
 		CreateDbInstanceRequest createDbInstanceRequest = CreateDbInstanceRequest.builder()
 				.dbInstanceClass(instanceClass)
