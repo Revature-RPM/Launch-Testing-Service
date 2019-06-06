@@ -42,8 +42,8 @@ public class EBService {
 				.solutionStackName(stackName)
 				.build();
 		// CreateApplicationVersionResponse resp = bean.createApplicationVersion(applicationRequest);
-		CreateEnvironmentResponse resptoo = bean.createEnvironment(envRequest);
-		return resptoo.toString();
+		CreateEnvironmentResponse resptoo = bean.createEnvironment(envRequest);//send EB request
+		return resptoo.toString();//return data of provisioned environment
 	}
 	public String deleteEC2() {
 		
