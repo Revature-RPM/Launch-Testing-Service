@@ -15,6 +15,12 @@ public class RDSController {
 	@Autowired
 	private RDSService rdsService;
 	@PostMapping("")
+	/**
+	 * post request for setting up an RDS DB of any type
+	 * 
+	 * @param DTO containing project language/rds engine/instanceID
+	 * @return
+	 */
 	public String createDatabase(@RequestBody String dialect) {
 		return rdsService.CreateRds();
 	}
