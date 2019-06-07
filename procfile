@@ -1,0 +1,1 @@
+web: java -jar spring-boot.jar --spring.jpa.datasource.username=$RDS_USER --spring.jpa.datasource.url=$RDS_URL --spring.jpa.datasource.password=$RDS_PASSWORD

@@ -3,6 +3,8 @@ package com.revature.services;
 import org.springframework.stereotype.Service;
 
 import software.amazon.awssdk.services.elasticbeanstalk.ElasticBeanstalkClient;
+import software.amazon.awssdk.services.elasticbeanstalk.model.CreateApplicationRequest;
+import software.amazon.awssdk.services.elasticbeanstalk.model.CreateApplicationResponse;
 import software.amazon.awssdk.services.elasticbeanstalk.model.CreateApplicationVersionRequest;
 import software.amazon.awssdk.services.elasticbeanstalk.model.CreateEnvironmentRequest;
 import software.amazon.awssdk.services.elasticbeanstalk.model.CreateEnvironmentResponse;
@@ -14,27 +16,31 @@ import software.amazon.awssdk.services.elasticbeanstalk.model.TerminateEnvironme
 public class EBService {
 
 	public String CreateEC2() {
-		String s3 = "norobotsplzdontfindme"; // These need to be passed from somewhere
+		String s3 = "norobotsplzdontfindme"; // This will eventually be the project s3
 		// String s3ARN = "arn:aws:s3:::expenseapplication";
 		//String s3Key = "It's an s3 key!!!!";
-		String versionLabel = "label1.1";
+		String versionLabel = "test1.3";
 		String objectURL = "https://norobotsplzdontfindme.s3.amazonaws.com/spring-boot.jar";
-		String name = "Tom is cool and so is devin";
+		String name = "spring-boot";
 		String stackName = "64bit Amazon Linux 2018.03 v2.8.3 running Java 8";
 		
 		S3Location s3Bucket = S3Location.builder()
 				.s3Bucket(s3)
-				.s3Key("spring-boot.jar")
+				.s3Key("spring-boot.zip")
 				.build();
 		ElasticBeanstalkClient bean = ElasticBeanstalkClient.create();
 		//CreateApplicationRequest
-		
+		//CreateApplicationRequest req = CreateApplicationRequest.builder()
+		//		.applicationName(name)
+		//		.build();
 		// Generate and attach Procfile
+		//bean.createApplication(req);
 		CreateApplicationVersionRequest applicationRequest = CreateApplicationVersionRequest.builder()
 				.sourceBundle(s3Bucket)
 				.applicationName(name)
 				.versionLabel(versionLabel)
 				.build();
+		bean.createApplicationVersion(applicationRequest);
 		CreateEnvironmentRequest envRequest = CreateEnvironmentRequest.builder()
 				.applicationName(name)
 				.versionLabel(versionLabel)
