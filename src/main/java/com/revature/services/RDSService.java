@@ -2,6 +2,7 @@ package com.revature.services;
 
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import org.springframework.stereotype.Service;
@@ -22,6 +23,9 @@ import software.amazon.awssdk.services.rds.model.DescribeDbClusterEndpointsReque
 import software.amazon.awssdk.services.rds.model.DescribeDbClusterEndpointsResponse;
 import software.amazon.awssdk.services.rds.model.DescribeDbInstancesRequest;
 import software.amazon.awssdk.services.rds.model.DescribeDbInstancesResponse;
+import software.amazon.awssdk.services.rds.model.DescribeEventSubscriptionsRequest;
+import software.amazon.awssdk.services.rds.model.DescribeEventSubscriptionsResponse;
+import software.amazon.awssdk.services.rds.model.EventSubscription;
 import software.amazon.awssdk.services.rds.transform.DescribeDbInstancesRequestMarshaller;
 
 @Service
@@ -36,7 +40,7 @@ public RdsDTO CreateRds(ProjectDTO projectDTO) {
 		//RdsClient rds = new Client();
 	RdsDTO rdsDTO = new RdsDTO();
 		String instanceClass = "db.t2.micro";//required for free tier
-		String instanceIdentifier = projectDTO.getInstanceId()+""+projectDTO.getdBLanguage();//name the RDS instance
+		String instanceIdentifier = projectDTO.getInstanceId()+"-"+projectDTO.getdBLanguage();//name the RDS instance
 		String engine = projectDTO.getdBLanguage();//engine type (postgres/SQL/MySQL etc)
 		RdsClient rds = RdsClient.create(); //create an empty client used for talking to AWS RDS SDK
 		CreateDbInstanceRequest createDbInstanceRequest = CreateDbInstanceRequest.builder()//start creating the request
@@ -48,24 +52,31 @@ public RdsDTO CreateRds(ProjectDTO projectDTO) {
 				.allocatedStorage(20)//number of storage in GB
 				.build();//formally build request
 		CreateDbInstanceResponse resp = rds.createDBInstance(createDbInstanceRequest);//send provision request get provision response
-		RdsAsyncClient client = RdsAsyncClient.create();
-		CompletableFuture<DescribeDbInstancesResponse> responseFuture = 
-				client.describeDBInstances(DescribeDbInstancesRequest.builder().build());
-		responseFuture.whenComplete(( response, err) -> {
-			try {
-				if(response != null) {
-					rdsDTO.setInstanceURL(response.dbInstances().get(0).endpoint().toString());
-					rdsDTO.setSecurityGroup(resp.dbInstance().dbSecurityGroups().toString());
-					rdsDTO.setUsername(resp.dbInstance().masterUsername());
-					rdsDTO.setPassword(System.getenv("JDBC_PASSWORD"));
-				}
-			}finally {
-				client.close();
-			}
-		});
- 		System.out.println(resp.dbInstance());
-		System.out.println(rdsDTO.toString());
+          
+		
+		int busyWaitingTime=3000;
+            String status ="";
+            while(!status.equalsIgnoreCase("available")) {
+            	try {
+            		Thread.sleep(busyWaitingTime);
+            	}catch(InterruptedException ex) {
+            		
+            	}
+            	DescribeDbInstancesResponse describeDbInstances = rds.describeDBInstances();
+                List<DBInstance> dbInstances = describeDbInstances.dbInstances();
+                if(dbInstances.get(0).endpoint() !=null) {
+                
+                rdsDTO.setInstanceURL(dbInstances.get(0).endpoint().address());
+                rdsDTO.setPassword(System.getenv("JDBC_PASSWORD"));
+                rdsDTO.setSecurityGroup(resp.dbInstance().dbSecurityGroups().toString());
+                rdsDTO.setUsername("dwightbrown");
+                status = dbInstances.get(0).dbInstanceStatus();
+                }
+                busyWaitingTime = 60000;
+            }
+            System.out.println(rdsDTO.toString());
 		return rdsDTO;
-	}	
+	}
 
+	
 }
