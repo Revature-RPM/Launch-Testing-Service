@@ -1,0 +1,15 @@
+Current Working Features
+  RDS being launched with all information related to connection available for interaction
+  Application POM file being parsed for important information
+
+In progress Feature
+  Launching EC2 insatnce through Elastic Beanstalk
+
+Planned Features
+  connect EC2 to RDS' security group
+  verify that application is running with proper commandline arguements
+
+Stretch Features
+  run a given sql script on the generated RDS
+  add a pre-defined role on the end of the sql script
+    glue hard set connection credentials 
