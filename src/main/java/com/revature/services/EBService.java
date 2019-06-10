@@ -23,7 +23,7 @@ public class EBService {
 		
 		S3Location s3Bucket = S3Location.builder()//builder pattern
 				.s3Bucket(s3)//name of object in s3 bucket
-				.s3Key(s3Key)//s3key to grab items
+				//.s3Key(s3Key)//s3key to grab items
 				.build();
 		ElasticBeanstalkClient bean = ElasticBeanstalkClient.create();//create a generic client
 		//CreateApplicationRequest 
