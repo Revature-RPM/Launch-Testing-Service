@@ -28,9 +28,9 @@ public class FileService {
     	ProjectDTO projectDTO = new ProjectDTO();
     	
     	for(int i = 0; i<project.getDependencies().size(); i++) {
-    		
     		switch (project.getDependencies().get(i).getGroupId()) {
     		case "org.postgresql":
+
     			projectDTO.setInstanceId(project.getDependencies().get(0).getArtifactId());
     			projectDTO.setdBLanguage("postgres");
     			projectDTO.setLanguage("Java Maven");
