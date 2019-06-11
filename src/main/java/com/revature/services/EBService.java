@@ -11,6 +11,7 @@ import software.amazon.awssdk.services.elasticbeanstalk.model.CreateEnvironmentR
 import software.amazon.awssdk.services.elasticbeanstalk.model.S3Location;
 import software.amazon.awssdk.services.elasticbeanstalk.model.TerminateEnvironmentRequest;
 import software.amazon.awssdk.services.elasticbeanstalk.model.TerminateEnvironmentResponse;
+import software.amazon.awssdk.services.rds.model.AuthorizeDbSecurityGroupIngressResponse;
 
 @Service
 public class EBService {
@@ -19,14 +20,14 @@ public class EBService {
 		String s3 = "norobotsplzdontfindme"; // This will eventually be the project s3
 		// String s3ARN = "arn:aws:s3:::expenseapplication";
 		//String s3Key = "It's an s3 key!!!!";
-		String versionLabel = "test1.3";
+		String versionLabel = "test1.6";
 		String objectURL = "https://norobotsplzdontfindme.s3.amazonaws.com/spring-boot.jar";
 		String name = "spring-boot";
 		String stackName = "64bit Amazon Linux 2018.03 v2.8.3 running Java 8";
 		
 		S3Location s3Bucket = S3Location.builder()
 				.s3Bucket(s3)
-				.s3Key("spring-boot.zip")
+				.s3Key("sampleproject.jar")
 				.build();
 		ElasticBeanstalkClient bean = ElasticBeanstalkClient.create();
 		//CreateApplicationRequest
@@ -35,6 +36,7 @@ public class EBService {
 		//		.build();
 		// Generate and attach Procfile
 		//bean.createApplication(req);
+		//AuthorizeDbSecurityGroupIngressResponse
 		CreateApplicationVersionRequest applicationRequest = CreateApplicationVersionRequest.builder()
 				.sourceBundle(s3Bucket)
 				.applicationName(name)
@@ -44,7 +46,7 @@ public class EBService {
 		CreateEnvironmentRequest envRequest = CreateEnvironmentRequest.builder()
 				.applicationName(name)
 				.versionLabel(versionLabel)
-				.environmentName("tomanddevinarecooleb")
+				.environmentName("nemo")
 				.solutionStackName(stackName)
 				.build();
 		// CreateApplicationVersionResponse resp = bean.createApplicationVersion(applicationRequest);
@@ -56,7 +58,7 @@ public class EBService {
 		ElasticBeanstalkClient bean = ElasticBeanstalkClient.create();
 		
 		TerminateEnvironmentRequest terminate = TerminateEnvironmentRequest.builder()
-				.environmentName("tomanddevinarecooleb")
+				.environmentName("nemo")
 				.terminateResources(true)
 				.build();
 		TerminateEnvironmentResponse resp = bean.terminateEnvironment(terminate);

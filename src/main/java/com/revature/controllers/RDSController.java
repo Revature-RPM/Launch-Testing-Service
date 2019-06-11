@@ -15,7 +15,9 @@ public class RDSController {
 	
 	@Autowired
 	private RDSService rdsService;
+	
 	XMLController xmlController = new XMLController();
+	
 	@PostMapping("")
 
 	/**
