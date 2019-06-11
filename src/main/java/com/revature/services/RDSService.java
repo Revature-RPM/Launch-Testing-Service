@@ -56,8 +56,7 @@ public RdsDTO CreateRds(ProjectDTO projectDTO) {
             while(!status.equalsIgnoreCase("available")) {
             	try {
             		Thread.sleep(busyWaitingTime);
-            	}catch(InterruptedException ex) {
-            		
+            	}catch(InterruptedException ex) {	
             	}
             	DescribeDbInstancesResponse describeDbInstances = rds.describeDBInstances();
                 List<DBInstance> dbInstances = describeDbInstances.dbInstances();
@@ -75,6 +74,4 @@ public RdsDTO CreateRds(ProjectDTO projectDTO) {
 		return rdsDTO;
 	}
 }
-
-	
 
