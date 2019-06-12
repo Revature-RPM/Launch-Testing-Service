@@ -20,14 +20,14 @@ public class EBService {
 		String s3 = "norobotsplzdontfindme"; // This will eventually be the project s3
 		// String s3ARN = "arn:aws:s3:::expenseapplication";
 		//String s3Key = "It's an s3 key!!!!";
-		String versionLabel = "test1.6";
+		String versionLabel = "procfilewithebex1.5";
 		String objectURL = "https://norobotsplzdontfindme.s3.amazonaws.com/spring-boot.jar";
 		String name = "spring-boot";
 		String stackName = "64bit Amazon Linux 2018.03 v2.8.3 running Java 8";
 		
 		S3Location s3Bucket = S3Location.builder()
 				.s3Bucket(s3)
-				.s3Key("sampleproject.jar")
+				.s3Key("springboot.zip")
 				.build();
 		ElasticBeanstalkClient bean = ElasticBeanstalkClient.create();
 		//CreateApplicationRequest
@@ -46,7 +46,7 @@ public class EBService {
 		CreateEnvironmentRequest envRequest = CreateEnvironmentRequest.builder()
 				.applicationName(name)
 				.versionLabel(versionLabel)
-				.environmentName("nemo")
+				.environmentName("nemooo")
 				.solutionStackName(stackName)
 				.build();
 		// CreateApplicationVersionResponse resp = bean.createApplicationVersion(applicationRequest);
