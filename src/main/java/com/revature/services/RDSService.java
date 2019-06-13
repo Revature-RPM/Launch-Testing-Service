@@ -22,7 +22,7 @@ public class RDSService {
 	 * @return the AWS response string showing all spun up server stats
 	 */
 
-public RdsDTO CreateRds(ProjectDTO projectDTO) {
+public RdsDTO createRds(ProjectDTO projectDTO) {
 		String instanceClass = "db.t2.micro";//required for free tier
 		String instanceIdentifier = projectDTO.getInstanceId()+"-"+projectDTO.getdBLanguage();//name the RDS instance
 		String engine = projectDTO.getdBLanguage();//engine type (postgres/SQL/MySQL etc)
@@ -36,7 +36,7 @@ public RdsDTO CreateRds(ProjectDTO projectDTO) {
 				.allocatedStorage(20)//number of storage in GB
 				.build();//formally build request
 		CreateDbInstanceResponse response = rds.createDBInstance(createDbInstanceRequest);//send provision request get provision response
-		return SetRdsDTO(rds);
+		return setRdsDTO(rds);
 	}
 
 /**
@@ -45,7 +45,7 @@ public RdsDTO CreateRds(ProjectDTO projectDTO) {
  * @param rds
  * @return RdsDTO
  */
-public RdsDTO SetRdsDTO(RdsClient rds) {
+public RdsDTO setRdsDTO(RdsClient rds) {
 RdsDTO rdsDTO = new RdsDTO();
 int busyWaitingTime=3000;
 String status ="";

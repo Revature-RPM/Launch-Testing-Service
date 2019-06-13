@@ -11,13 +11,13 @@ import com.revature.models.Project;
 
 public class FileService {
 	public Project ConvertFileToPOJO() {
-		Project project = null;
+		Project project = new Project();
 		try {
 		ObjectMapper objectMapper = new XmlMapper();
         // Reads from XML and converts to POJO
-		String readContent = new String(Files.readAllBytes(Paths.get("C:\\Users\\User\\Documents\\revature\\Project 3\\pom.xml")));
+		String readContent = new String(Files.readAllBytes(Paths.get("..\\..\\..\\..\\..\\src\\assets\\pom.xml")));
 		project = objectMapper.readValue(readContent, Project.class);
-		System.out.println(project);
+		return project;
        
 		} catch (IOException e) {
 			e.printStackTrace();
