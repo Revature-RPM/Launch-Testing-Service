@@ -10,40 +10,27 @@ import com.revature.DTOs.ProjectDTO;
 import com.revature.models.Project;
 
 public class FileService {
-<<<<<<< HEAD
 	/**
 	 * Converts a given pom.xml into a workable project POJO  
 	 * @return 
 	 */
-	public Project convertFileToPOJO() {
-=======
 	public Project ConvertFileToPOJO() {
-		Project project = new Project();
->>>>>>> 6518cfb95081101505c1a1eb65534220b0dc618d
 		try {
 		//Jackson Objmapper creation (taking in XML files)
 		ObjectMapper objectMapper = new XmlMapper();
         // Reads from XML and converts to POJO
-<<<<<<< HEAD
+
 		String readContent = new String(Files.readAllBytes(Paths.get("C:\\Users\\amnaazmi786\\Documents\\revature\\ProjectTest\\pom.xml")));//read a file (currently file location is hardcoded)
 		Project project = objectMapper.readValue(readContent, Project.class);//read content into a project object
 		System.out.println(project);//print project 
         return project;//return POJO
-=======
-		String readContent = new String(Files.readAllBytes(Paths.get("..\\..\\..\\..\\..\\src\\assets\\pom.xml")));
-		project = objectMapper.readValue(readContent, Project.class);
-		return project;
-       
->>>>>>> 6518cfb95081101505c1a1eb65534220b0dc618d
+
 		} catch (IOException e) {
 			e.printStackTrace();
-		}finally {
-		return project;
 		}
-<<<<<<< HEAD
+
 		return null;//returns null if failure
-=======
->>>>>>> 6518cfb95081101505c1a1eb65534220b0dc618d
+
 	}
 	
 	/**
