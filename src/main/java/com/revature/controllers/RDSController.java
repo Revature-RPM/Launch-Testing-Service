@@ -22,19 +22,14 @@ public class RDSController {
 	XMLController xmlController = new XMLController();
 	
 	@PostMapping("")
-
-
-
-
 	/**
-
 	 * post request for setting up an RDS DB of any type
 	 * 
 	 * @param DTO containing project language/rds engine/instanceID
 	 * @return
 	 */
 	public RdsDTO createDatabase(@RequestBody ProjectDTO projectDTO) {
-		return rdsService.CreateRds(xmlController.getProject());
+		return rdsService.createRds(xmlController.getProject());
 
 	
 	}
