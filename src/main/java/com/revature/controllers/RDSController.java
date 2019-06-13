@@ -18,7 +18,9 @@ public class RDSController {
 	
 	@Autowired
 	private RDSService rdsService;
+	
 	XMLController xmlController = new XMLController();
+	
 	@PostMapping("")
 
 
@@ -31,8 +33,6 @@ public class RDSController {
 	 * @param DTO containing project language/rds engine/instanceID
 	 * @return
 	 */
-
-
 	public RdsDTO createDatabase(@RequestBody ProjectDTO projectDTO) {
 		return rdsService.CreateRds(xmlController.getProject());
 
