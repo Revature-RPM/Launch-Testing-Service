@@ -10,23 +10,40 @@ import com.revature.DTOs.ProjectDTO;
 import com.revature.models.Project;
 
 public class FileService {
+<<<<<<< HEAD
 	/**
 	 * Converts a given pom.xml into a workable project POJO  
 	 * @return 
 	 */
 	public Project convertFileToPOJO() {
+=======
+	public Project ConvertFileToPOJO() {
+		Project project = new Project();
+>>>>>>> 6518cfb95081101505c1a1eb65534220b0dc618d
 		try {
 		//Jackson Objmapper creation (taking in XML files)
 		ObjectMapper objectMapper = new XmlMapper();
         // Reads from XML and converts to POJO
+<<<<<<< HEAD
 		String readContent = new String(Files.readAllBytes(Paths.get("C:\\Users\\amnaazmi786\\Documents\\revature\\ProjectTest\\pom.xml")));//read a file (currently file location is hardcoded)
 		Project project = objectMapper.readValue(readContent, Project.class);//read content into a project object
 		System.out.println(project);//print project 
         return project;//return POJO
+=======
+		String readContent = new String(Files.readAllBytes(Paths.get("..\\..\\..\\..\\..\\src\\assets\\pom.xml")));
+		project = objectMapper.readValue(readContent, Project.class);
+		return project;
+       
+>>>>>>> 6518cfb95081101505c1a1eb65534220b0dc618d
 		} catch (IOException e) {
 			e.printStackTrace();
+		}finally {
+		return project;
 		}
+<<<<<<< HEAD
 		return null;//returns null if failure
+=======
+>>>>>>> 6518cfb95081101505c1a1eb65534220b0dc618d
 	}
 	
 	/**
@@ -37,6 +54,7 @@ public class FileService {
     public ProjectDTO getProjectDetails(Project project) {
     	ProjectDTO projectDTO = new ProjectDTO();//create base DTO object
     	
+
     	for(int i = 0; i<project.getDependencies().size(); i++) {//rip through all of the POJO's dependencies
     		switch (project.getDependencies().get(i).getGroupId()) {//checking for specific dependencies used to determine certain required resources
     		case "org.postgresql"://case where RDs needed is PostgreSQL
@@ -53,6 +71,7 @@ public class FileService {
     			return projectDTO;
     		default: //case for if we dont have a dependency match
     			break;//break because we don't effectively deal with it here (for cases where the project libraries handle it or its a project we dont have a template for
+
     		}
     	}    	
 		return null;
