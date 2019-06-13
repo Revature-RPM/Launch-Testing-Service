@@ -11,17 +11,19 @@ import com.revature.models.Project;
 
 public class FileService {
 	public Project ConvertFileToPOJO() {
+		Project project = null;
 		try {
 		ObjectMapper objectMapper = new XmlMapper();
         // Reads from XML and converts to POJO
-		String readContent = new String(Files.readAllBytes(Paths.get("C:\\Users\\amnaazmi786\\Documents\\revature\\ProjectTest\\pom.xml")));
-		Project project = objectMapper.readValue(readContent, Project.class);
+		String readContent = new String(Files.readAllBytes(Paths.get("C:\\Users\\User\\Documents\\revature\\Project 3\\pom.xml")));
+		project = objectMapper.readValue(readContent, Project.class);
 		System.out.println(project);
-        return project;
+       
 		} catch (IOException e) {
 			e.printStackTrace();
+		}finally {
+		return project;
 		}
-		return null;
 	}
 	
     public ProjectDTO GetProjectDetails(Project project) {
@@ -30,15 +32,14 @@ public class FileService {
     	for(int i = 0; i<project.getDependencies().size(); i++) {
     		switch (project.getDependencies().get(i).getGroupId()) {
     		case "org.postgresql":
-
     			projectDTO.setInstanceId(project.getDependencies().get(0).getArtifactId());
     			projectDTO.setdBLanguage("postgres");
     			projectDTO.setLanguage("Java Maven");
     			projectDTO.setVersion(project.getProperties().get(1).getProperty());
     			return projectDTO;
-    		case "com.oracle":
+    		case "oracle":
     			projectDTO.setInstanceId(project.getDependencies().get(0).getArtifactId());
-    			projectDTO.setdBLanguage("oracle-ee");
+    			projectDTO.setdBLanguage("oracle");
     			projectDTO.setLanguage("Java Maven");
     			projectDTO.setVersion(project.getProperties().get(1).getProperty());
     			return projectDTO;
