@@ -5,13 +5,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.services.EC2Service;
+import com.revature.services.EC2InstanceService;
 
 @RestController
 @RequestMapping("ec2")
 public class EC2Controller {
 	@Autowired
-	EC2Service ecService;
+	EC2InstanceService ecService;
 	
 	@PostMapping("")
 	public String createEc2() {
