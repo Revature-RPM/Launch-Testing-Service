@@ -12,11 +12,22 @@ import com.revature.models.ConnectionVariables;
 import com.revature.models.EnvironmentVariable;
 import com.revature.utils.FileHelper;
 
+/**
+ * Service to handle Dockerfiles.
+ * 
+ * @author Java, JUN 19 - USF
+ *
+ */
 @Component
 public class DockerfileServiceImpl implements DockerfileService {
 	
+	private final String DOCKERFILE_POSTGRES = "DockerfilePostgres";
+	private final String DOCKERFILE_TOMCAT = "DockerfileTomcat";
 	private final String DOCKER_FILE_DIR = "dockerfiles/";
 
+	/**
+	 * Tomcat Dockerfile obtained from: https://hub.docker.com/_/tomcat
+	 */
 	@Override
 	public File generateTomcatServerDockerfile(
 			String projectId,
@@ -25,8 +36,11 @@ public class DockerfileServiceImpl implements DockerfileService {
 			ConnectionVariables conVar,
 			List<EnvironmentVariable> environmentVariables) throws IOException {
 		
-		String dockerfileContent = FileHelper.getTextFileContent(DOCKER_FILE_DIR + "DockerfileJava");
+		// Loading the Dockerfile, it has placeholder values (denoted by %%) that will be 
+		// replaced with the specific values for this project
+		String dockerfileContent = FileHelper.getTextFileContent(DOCKER_FILE_DIR + DOCKERFILE_TOMCAT);
 		
+		// Replace placeholder values
 		dockerfileContent = dockerfileContent.replaceAll("%gitHubUrl%", gitHubUrl + ".git");
 		dockerfileContent = dockerfileContent.replaceAll("%pomLocation%", pomLocation);
 		dockerfileContent = dockerfileContent.replaceAll("%db_url%", conVar.getUrlVariableName());
@@ -41,7 +55,8 @@ public class DockerfileServiceImpl implements DockerfileService {
 		
 		dockerfileContent = dockerfileContent.replaceAll("%enviromentVariables%", envVarStr);
 		
-		File dockerfile = new File("DockerfileJava-" + projectId);
+		// Create a new file and write the Dockerfile in this
+		File dockerfile = new File(DOCKERFILE_TOMCAT + "-" + projectId);
 		dockerfile.deleteOnExit();
 		
 		BufferedWriter out = new BufferedWriter(new FileWriter(dockerfile));
@@ -53,11 +68,14 @@ public class DockerfileServiceImpl implements DockerfileService {
 
 	@Override
 	public File generatePostgreSQLDockerfile(String projectId, String sqlScriptUrl) throws IOException {
-		String dockerfileContent = FileHelper.getTextFileContent(DOCKER_FILE_DIR + "DockerfilePG");
+		// Loading the Dockerfile, it has placeholder values (denoted by %%) that will be 
+		// replaced with the specific values for this project
+		String dockerfileContent = FileHelper.getTextFileContent(DOCKER_FILE_DIR + DOCKERFILE_POSTGRES);
 		
 		dockerfileContent = dockerfileContent.replaceAll("%sqlScriptUrl%", sqlScriptUrl);
 		
-		File dockerfile = new File("DockerfilePG-" + projectId);
+		// Create a new file and write the Dockerfile in this
+		File dockerfile = new File(DOCKERFILE_POSTGRES + "-" + projectId);
 		dockerfile.deleteOnExit();
 		
 		BufferedWriter out = new BufferedWriter(new FileWriter(dockerfile));

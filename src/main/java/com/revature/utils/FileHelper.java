@@ -7,11 +7,17 @@ import java.util.Scanner;
 
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * File utilities.
+ * 
+ * @author Java, JUN 19 - USF
+ *
+ */
 public class FileHelper {
 	
 	/**
 	 * Get content from a text file.
-	 * @param fileName File name in the url.
+	 * @param fileName File name in the URL.
 	 * @return File content
 	 */
 	public static String getTextFileContent(String fileName) {

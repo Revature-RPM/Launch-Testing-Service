@@ -1,4 +1,3 @@
-    
 package com.revature.services;
 
 import java.io.UnsupportedEncodingException;
@@ -7,7 +6,7 @@ import java.io.UnsupportedEncodingException;
  * Service to spin up, and other operations in EC2 instances in which
  * the projects are going to be deployed.
  * 
- * @author Java bash, Jun 19 - USF
+ * @author Java, JUN 19 - USF
  *
  */
 public interface EC2InstanceService {
