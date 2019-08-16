@@ -10,6 +10,10 @@ import com.revature.models.EnvironmentVariable;
 
 import software.amazon.awssdk.services.s3.S3Client;
 
+/**
+ * File used for testing functionality. Not used in the system (Just for testing).
+ *
+ */
 public class DockerfileTest {
 
 	public static void main(String[] args) throws IOException {

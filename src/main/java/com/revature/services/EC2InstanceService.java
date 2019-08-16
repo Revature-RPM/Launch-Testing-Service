@@ -3,10 +3,10 @@ package com.revature.services;
 import java.io.UnsupportedEncodingException;
 
 /**
- * Service to spin up, and other operations in EC2 instances in which
- * the projects are going to be deployed.
+ * Service to spin up an EC2 instance, and perform other operations in EC2 instances 
+ * in which the projects are going to be deployed.
  * 
- * @author Java, JUN 19 - USF
+ * @author Java, MAY 19 - USF
  *
  */
 public interface EC2InstanceService {
@@ -22,7 +22,7 @@ public interface EC2InstanceService {
 	public String spinUpEC2Instance(String bashScript) throws UnsupportedEncodingException;
 	
 	/**
-	 * Get EC2 instance DNS (url) in which the project will be running.
+	 * Get EC2 instance DNS (URL) in which the project will be running.
 	 * Because creating the instance takes a long time, we need to called this in order
 	 * to be able to obtain the EC2 public DNS.
 	 * @param instaceId Instance id of the EC2

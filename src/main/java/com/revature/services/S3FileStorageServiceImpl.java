@@ -14,7 +14,7 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 /**
  * Service to store files in an S3 bucket.
  * 
- * @author Java, JUN 19 - USF
+ * @author Java, MAY 19 - USF
  *
  */
 @Component
@@ -49,6 +49,9 @@ public class S3FileStorageServiceImpl implements S3FileStorageService {
 	}
 
 	/**
+	 * We use this method to store any kind of files in an S3 bucket. For this project
+	 * we store docker files, and SQL scripts related to our projects.
+	 * 
 	 * Code based from: 
 	 * http://jamesabrannan.com/2019/04/19/amazons-aws-s3-java-api-2-0-using-spring-boot-as-client/
 	 */

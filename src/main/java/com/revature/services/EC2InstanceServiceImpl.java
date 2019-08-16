@@ -34,7 +34,7 @@ import software.amazon.awssdk.services.ec2.model.Tag;
  * The code was based on the examples from the official AWS SDK documentation.
  * https://github.com/awsdocs/aws-doc-sdk-examples
  * 
- * @author Java, JUN 19 - USF
+ * @author Java, MAY 19 - USF
  *
  */
 @Component
@@ -47,6 +47,7 @@ public class EC2InstanceServiceImpl implements EC2InstanceService {
 	private String vpcId; // VPC id for this EC2
 	
 	private Ec2Client ec2Client; // EC2 client
+	private String securityGroupDescription = "Revature RPM"; // This value is just informational
 
 	@Autowired
 	public void setEc2Client(Ec2Client ec2Client) {
@@ -78,6 +79,27 @@ public class EC2InstanceServiceImpl implements EC2InstanceService {
 		this.vpcId = vpcId;
 	}
 
+	/**
+	 * This method is used to spin up a new EC2 instance every time a project gets approved.
+	 * In order to spin up a new EC2 instance, we need to go through many steps:
+	 * 1. Create a new security group for our EC2.
+	 * 2. Create access rules for our EC2 (port 80, 5432, 22).
+	 * 3. Create key pairs to secure our EC2 instances and to generate a .PEM file in case we
+	 * 	  want to access our EC2 using SSH.
+	 * 4. Create a new EC2 instance, we need to specify:
+	 * 	 	a) The machine image.
+	 * 		b) The type of instance.
+	 * 		c) The key name (key pair).
+	 * 		d) The security group (s) (in this case we use the name).
+	 * 		e) The user data (bash script). This contains all the commands that are going to be run
+	 * 		   when creating our new EC2 instance. They need to be encoded using Base64.
+	 * 		   This script will install docker, grab the docker files for the project from our
+	 * 		   S3 bucket, build the docker containers and run them.
+	 * 
+	 * From this method we are able to return the instance id of the newly created EC2, this way
+	 * we will be able to obtain the public DNS for this instance.
+	 * 
+	 */
 	@Override
 	public String spinUpEC2Instance(String bashScript) throws UnsupportedEncodingException {
 		
@@ -132,8 +154,10 @@ public class EC2InstanceServiceImpl implements EC2InstanceService {
 	}
 
 	/**
-	 * Create key-pair object to secure our EC2 and generate .PEM file when
-	 * connecting using SSH
+	 * Create key-pair object to secure our EC2 and generate .PEM file in case we need to
+	 * connect to our EC2 using SSH. Currently we are using the same key pair to secure all our
+	 * EC2 instances, but if we want to secure our EC2 better we can generate our key pair
+	 * using random values (perhaps using a library like StringUtils from Apache).
 	 */
 	private void createKeyPairRequest() {
 		CreateKeyPairRequest createKeyPairRequest =  CreateKeyPairRequest.builder()
@@ -158,8 +182,11 @@ public class EC2InstanceServiceImpl implements EC2InstanceService {
 	}
 
 	/**
-	 * Established access rules for this EC2. Allowing everything to connect using port 80, 22
-	 * and 5432 
+	 * Established access rules for this EC2. We allow external connections from port 80, 22
+	 * and 5432. This way, we are able to access our web server, our EC2 using SSH and our PEM
+	 * file and our database server (PostgreSQL).
+	 * 
+	 * If the access rules already exist, we just catch them to avoid our program from crashing.
 	 */
 	private void createEC2AccessRules() {
 		// Creating rules to access the ec2 instance from outside
@@ -203,12 +230,14 @@ public class EC2InstanceServiceImpl implements EC2InstanceService {
 	}
 
 	/**
-	 * Creating security group for this EC2
+	 * Creating security group for the EC2 instances that will be created.
+	 * If the security group already exist, this will throw an exception. We just need to catch
+	 * the exception because we don't want our program to crash, we just reuse the existing one.
 	 */
 	private void createSecurityGroupRequest() {
 		CreateSecurityGroupRequest createSecurityGroupRequest = CreateSecurityGroupRequest.builder()
 				.groupName(securityGroupName)
-				.description("Revature tests")
+				.description(securityGroupDescription)
 				.vpcId(vpcId)
 				.build();
 		
@@ -224,6 +253,14 @@ public class EC2InstanceServiceImpl implements EC2InstanceService {
 
 	/**
 	 * Get the new public DNS to for the EC2 instance.
+	 * Because spinning up a new EC2 instance takes time, plus the time that we add, when we
+	 * install docker, download the necessary files to create our containers, download
+	 * the dependencies for our projects using Maven, we are not able to obtain the public DNS
+	 * of our new EC2, in which we are deploying our project, right away. Then, we need to get
+	 * this value later on once our EC2 is ready to be accessed.
+	 * 
+	 * Once solution to this problem might be to create a custom amazon machine with all the
+	 * software that we need already installed. This way we might be able to speed up this process.
 	 * 
 	 * @param instaceId EC2 instance id
 	 */

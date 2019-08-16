@@ -3,7 +3,7 @@ package com.revature.models;
 /**
  * Variables used to establish the connection with the database in the docker container.
  * 
- * @author Java, JUN 19 - USF
+ * @author Java, MAY 19 - USF
  *
  */
 public class ConnectionVariables {

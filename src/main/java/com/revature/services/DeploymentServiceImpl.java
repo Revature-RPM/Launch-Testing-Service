@@ -12,16 +12,31 @@ import com.revature.utils.FileHelper;
 
 /**
  * Takes care of all the necessary process to deploy a project in an EC2 instance.
- * @author Java, JUN 19 - USF
+ * This class was designed to be the single point of access to the deployment process.
+ * This way we only need to call an object from this class in the controller instead of
+ * calling all the services.
+ * This class is implementing the facade pattern:
+ * 
+ * More information about this pattern here:
+ * https://www.tutorialspoint.com/design_pattern/facade_pattern
+ * 
+ * @author Java, MAY 19 - USF
  *
  */
 @Component
 public class DeploymentServiceImpl implements DeploymentService {
 
 	private EC2InstanceService ec2InstanceService; // EC2 instance service
-	private DockerfileService dockerFileService; // Dockerfile service
+	private DockerfileService dockerFileService; // Docker file service
 	private S3FileStorageService s3FileStorageService; // S3 file storage service
 	private BashScriptService bashScriptService; // Bash script service
+	
+	/**
+	 *  %s will be replaced by the public DNS we got from amazon
+	 *  we setup projects URL to end with '/project2' this way we avoid
+	 *  naming confusion when accessing our project from the web browser.
+	 */
+	private final String PROJECT_URL_DNS_FORMAT = "%s/project2";
 
 	@Autowired
 	public void setEc2InstanceService(EC2InstanceService ec2InstanceService) {
@@ -44,15 +59,15 @@ public class DeploymentServiceImpl implements DeploymentService {
 	}
 
 	/**
-	 * Deploy project to the EC2 instance using Dockerfile.
+	 * Deploy project to the EC2 instance using Docker files.
 	 * 
 	 * Steps:
 	 * 
 	 * 1. Save SQL script to an S3 bucket.
-	 * 2. Create Dockerfile for a database instance.
-	 * 3. Create Dockerfile for an application server instance.
-	 * 4. Store database Dockerfile in the S3 bucket to make it accessible to the EC2.
-	 * 5. Store application Dockerfile in the S3 bucket to make it accessible to the EC2.
+	 * 2. Create Docker file for a database instance.
+	 * 3. Create Docker file for an application server instance.
+	 * 4. Store database Docker file in the S3 bucket to make it accessible to the EC2.
+	 * 5. Store application Docker file in the S3 bucket to make it accessible to the EC2.
 	 * 6. Generate bash script that will be run when we spin up the EC2 instance.
 	 * 7. Spin up a new EC2.
 	 * 
@@ -62,8 +77,8 @@ public class DeploymentServiceImpl implements DeploymentService {
 	@Override
 	public String deployProject(Deployment deployment) {
 		
-		File dbDockefile = null; // Dockerfile for database
-		File appDockerfile = null; // Dockerfile for application server
+		File dbDockefile = null; // Docker file for database
+		File appDockerfile = null; // Docker file for application server
 
 		try {
 			// Convert a Multipart file into a regular Java file
@@ -72,12 +87,12 @@ public class DeploymentServiceImpl implements DeploymentService {
 			// Store sql script file in S3 bucket
 			String sqlSctiptUrl = s3FileStorageService.storeFile(sqlScriptFile);
 			
-			sqlScriptFile.delete(); // Delete sql file after store it in the S3 bucket
+			sqlScriptFile.delete(); // Delete sql file after storing it in the S3 bucket
 
-			// Generate Dockerfile for database
+			// Generate Docker file for database
 			dbDockefile = dockerFileService.generatePostgreSQLDockerfile(deployment.getProjectId(), sqlSctiptUrl);
 			
-			// Generate Dockerfile for web application server
+			// Generate Docker file for web application server
 			appDockerfile = dockerFileService.generateTomcatServerDockerfile(
 					deployment.getProjectId(),
 					deployment.getGitHubUrl(),
@@ -94,7 +109,8 @@ public class DeploymentServiceImpl implements DeploymentService {
 		String dbDockerfileUrl = s3FileStorageService.storeFile(dbDockefile);
 		String appDockerfileUrl = s3FileStorageService.storeFile(appDockerfile);
 		
-		// Delete Docker files
+		// Delete generated Docker files, we have this files in the S3 bucket, so we don't
+		// need them anymore, this way we can keep our server clean
 		dbDockefile.delete();
 		appDockerfile.delete();
 		
@@ -115,14 +131,21 @@ public class DeploymentServiceImpl implements DeploymentService {
 	}
 
 	/**
-	 * Get public Dns for the EC2 instance given the id.
+	 * Get public DNS for the EC2 instance given the id.
+	 * This will obtained from the ec2 service.
 	 * 
 	 * @param ec2InstanceId EC2's instance id
 	 */
 	@Override
 	public String getEC2ProjectPublicDns(String ec2InstanceId) {
 		
-		return ec2InstanceService.getEC2InstancePublicDNS(ec2InstanceId);
+		String publicDns = ec2InstanceService.getEC2InstancePublicDNS(ec2InstanceId);
+		
+		if (publicDns == null || publicDns.isEmpty() || publicDns.equals("")) {
+			return null;
+		}
+		
+		return String.format(PROJECT_URL_DNS_FORMAT, publicDns);
 	}
 
 }

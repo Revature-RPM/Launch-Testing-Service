@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 /**
  * Stores all the information needed for deploy a Java application in an EC2 instance.
  * 
- * @author Java, JUN 19 - USF
+ * @author Java, MAY 19 - USF
  *
  */
 public class Deployment {

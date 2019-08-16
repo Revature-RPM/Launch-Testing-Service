@@ -8,15 +8,15 @@ import java.util.Scanner;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * File utilities.
+ * File utilities for our project.
  * 
- * @author Java, JUN 19 - USF
+ * @author Java, MAY 19 - USF
  *
  */
 public class FileHelper {
 	
 	/**
-	 * Get content from a text file.
+	 * Get content from a text file and return it as String.
 	 * @param fileName File name in the URL.
 	 * @return File content
 	 */
@@ -34,6 +34,7 @@ public class FileHelper {
 
 		} catch (Exception e) {
 			// TODO: handle exception, Log the exception
+			e.printStackTrace();
 		} finally {
 			sc.close();
 		}
@@ -42,8 +43,10 @@ public class FileHelper {
 	}
 	
 	/**
-	 * Got this from Project service.
-	 * @param multipartFile Sql script
+	 * Got this from Project service. This method convert a multipart file into a regular
+	 * Java file, this way we are able to store it and handle it.
+	 * 
+	 * @param multipartFile File sent to the server.
 	 * @return Java File object
 	 * @throws IOException
 	 */

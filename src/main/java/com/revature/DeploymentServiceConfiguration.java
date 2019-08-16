@@ -9,7 +9,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 /**
  * Creates the necessary beans for this application.
  * 
- * @author Java, JUN 19 - USF
+ * @author Java, MAY 19 - USF
  *
  */
 @Configuration
@@ -17,6 +17,8 @@ public class DeploymentServiceConfiguration {
 	
 	/**
 	 * Instantiating S3 client.
+	 * This bean will allow us to store files in an S3 bucket.
+	 * 
 	 * @return s3 client.
 	 */
 	@Bean
@@ -26,6 +28,8 @@ public class DeploymentServiceConfiguration {
 	
 	/**
 	 * Instantiating EC2 client.
+	 * This bean will allow us to create new EC2 instances.
+	 * 
 	 * @return ec2 client.
 	 */
 	@Bean

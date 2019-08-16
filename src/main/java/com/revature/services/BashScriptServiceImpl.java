@@ -5,14 +5,14 @@ import org.springframework.stereotype.Component;
 /**
  * Service to generate Bash script that is going to be run in the new ec2 instance.
  * 
- * @author Java, JUN 19 - USF
+ * @author Java, MAY 19 - USF
  *
  */
 @Component
 public class BashScriptServiceImpl implements BashScriptService {
 	
 	/**
-	 * Script to be run in the EC2 when creating it using AWS sdk.
+	 * Script to be run in the EC2 when creating it using AWS SDK.
 	 * 
 	 * 1. Install docker and start docker in the EC2
 	 * 2. Download the docker file for the database and application and rename them
@@ -23,6 +23,13 @@ public class BashScriptServiceImpl implements BashScriptService {
 	 *    giver the alias 'db'. This alias will allow to establish a connection between our
 	 *    Java application running in 'web' container and our Postgresql database running in 'database'
 	 *    using a jdbc url like this: jdbc:postgresql://db:5432/docker
+	 * 
+	 * Place holders:
+	 * 
+	 * %dbDockerfileUrl% -> This will be replaced with the URL of the docker file containing
+	 * the instructions to set up the database server.
+	 * %appDockerfileUrl% -> This will be replaced with the URL of the docker file containing
+	 * the instructions to set up the web server.
 	 * 
 	 */
 	private String bashScript = 
@@ -41,7 +48,9 @@ public class BashScriptServiceImpl implements BashScriptService {
 
 	@Override
 	public String generateBashScript(String dbDockerfileUrl, String appDockerfileUrl) {
+		// Replace this place holder with the URL of the Docker file for the Database
 		bashScript = bashScript.replaceAll("%dbDockerfileUrl%", dbDockerfileUrl);
+		// Replace this place holder with the URL of the Docker file for web server
 		bashScript = bashScript.replaceAll("%appDockerfileUrl%", appDockerfileUrl);
 		
 		return bashScript;

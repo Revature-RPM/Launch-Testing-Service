@@ -24,7 +24,7 @@ import com.revature.services.DeploymentService;
 /**
  * Rest controller for the deployment service
  *
- * @author Java, JUN 19 - USF
+ * @author Java, MAY 19 - USF
  *
  */
 @RestController
@@ -96,7 +96,7 @@ public class DeploymentController {
 	}
 	
 	/**
-	 * Deploy project to the EC2 instance using a preexisting Dockerfile.
+	 * Deploy project to the EC2 instance using a preexisting Docker file.
 	 * 
 	 * @param projectId Project id associated to this deployment.
 	 * @param dockerfileUrl URL of the docker file to be deployed.
@@ -120,6 +120,7 @@ public class DeploymentController {
 	 */
 	@GetMapping(value = "/dns/{instanceId}", produces = MediaType.TEXT_PLAIN_VALUE)
 	public String getPublicEC2Dns(@PathVariable("instanceId") String instanceId) {
+		// TODO If the EC2 doesn't exist, we need to return a 404 status
 		return deploymentService.getEC2ProjectPublicDns(instanceId);
 	}
 }

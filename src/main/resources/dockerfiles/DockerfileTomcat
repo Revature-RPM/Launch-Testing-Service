@@ -2,9 +2,12 @@ FROM openjdk:8-jdk-alpine3.7 AS builder
 
 WORKDIR /app
 
+# Install curl to download Maven
 RUN apk add curl
 
+# Set up our GitHub URL for our project
 ENV GITHUB_URL %gitHubUrl%
+# Set up POM location
 ENV POM_LOCATION /app%pomLocation% 
 
 ENV MAVEN_VERSION 3.3.9
@@ -19,11 +22,16 @@ VOLUME /root/.m2
 
 RUN apk add git
 
+# Clone our GitHub repository
 RUN git clone $GITHUB_URL
 
 WORKDIR $POM_LOCATION
+
+# Build our project using Maven
 RUN mvn package
 
+# Change our war file name, this way we can provide the DNS of our project pointing
+# to the same endpoint (AWS_PUBLIC_DNS/project2)
 RUN find $POM_LOCATION/target -name "*.war" -exec cp {} $POM_LOCATION/target/project2.war \;
 
 FROM tomcat:8.5.43
